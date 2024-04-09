@@ -1,33 +1,39 @@
-import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useContext, useState } from 'react';
+import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {Feather} from '@expo/vector-icons'
+import Product from '../../components/Product';
+import {useNavigation} from '@react-navigation/native'
+import {CartContext} from '../../contexts/CartContext'
+
 
 export default function Home() {
+    const {cart} = useContext(CartContext)
+    const navigation = useNavigation();
     const [products, setProducts] = useState([
         {
             id: 1,
             nome: "Coca cola",
-            preco: 19.90,
+            preco: 19.99,
         },
         {
             id: 2,
             nome: "Chocolate",
-            preco: 6.50,
+            preco: 6.59,
         },
         {
             id: 3,
             nome: "Queijo 500g",
-            preco: 15,
+            preco: 15.99,
         },
         {
             id: 4,
             nome: "Batata frita",
-            preco: 23.90,
+            preco: 23.92,
         },
         {
             id: 5,
             nome: "Guarana lata",
-            preco: 6.00,
+            preco: 6.21,
         },
     ])
     return (
@@ -35,15 +41,27 @@ export default function Home() {
             <View style={styles.cartContent}>
                 <Text style={styles.title}> Lista de produtos </Text>
 
-        <TouchableOpacity style={styles.cartButton}>
+        <TouchableOpacity
+         style={styles.cartButton}
+         onPress={()=> navigation.navigate('Cart')}
+        >
             <View style={styles.dot}>
-                <Text style={styles.dotText}>5</Text>
+                <Text style={styles.dotText}>{cart?.length}</Text>
             </View>
             <Feather name='shopping-cart' size={30} color="#000"/>
         </TouchableOpacity>
 
             </View>
+
+        <FlatList
+        style={styles.list}
+        data={products}
+        keyExtractor={(item)=> String(item.id)}
+        renderItem={({item})=> <Product  data={item}/>}
+        />
+
         </SafeAreaView>
+
     );
 }
 
