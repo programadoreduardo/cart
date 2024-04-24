@@ -7,35 +7,41 @@ import {CartContext} from '../../contexts/CartContext'
 
 
 export default function Home() {
-    const {cart} = useContext(CartContext)
+    const {cart, addItemCart} = useContext(CartContext)
     const navigation = useNavigation();
     const [products, setProducts] = useState([
         {
             id: 1,
             nome: "Coca cola",
-            preco: 19.99,
+            price: 19.99,
         },
         {
             id: 2,
             nome: "Chocolate",
-            preco: 6.59,
+            price: 6.59,
         },
         {
             id: 3,
             nome: "Queijo 500g",
-            preco: 15.99,
+            price: 15.99,
         },
         {
             id: 4,
             nome: "Batata frita",
-            preco: 23.92,
+            price: 23.92,
         },
         {
             id: 5,
             nome: "Guarana lata",
-            preco: 6.21,
+            price: 6.21,
         },
     ])
+
+
+    function handleAddCart(item){
+        addItemCart(item)
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.cartContent}>
@@ -57,7 +63,7 @@ export default function Home() {
         style={styles.list}
         data={products}
         keyExtractor={(item)=> String(item.id)}
-        renderItem={({item})=> <Product  data={item}/>}
+        renderItem={({item})=> <Product  data={item} addToCart={()=> handleAddCart(item)}/>}
         />
 
         </SafeAreaView>
